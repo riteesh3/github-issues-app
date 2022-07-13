@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
-import { Link, Redirect } from "react-router-dom";
-import IssueDetails from "./IssueDetails";
+import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 
 const Home = () => {
@@ -10,8 +9,7 @@ const Home = () => {
     const [ reponame, setReponame ] = useState("");
     const [ loading, setLoading ] = useState(false);
     const [ repos,setRepos ] = useState([]);
-    const [ details, setDetails ] = useState({});
-    const [ detailsLoading, setDetailsLoading ] = useState(false);
+    const [ errorMessage, setErrorMessage] = useState("");
     const myarr = reponame.split("/");
 
     function handleSubmit(e){
@@ -30,12 +28,10 @@ const Home = () => {
         }).catch(function (error) {
         if (error.response) {
           const status = error.response.status;
-          if(status === 400){
+          if(status === 404){
             setLoading(false);
             var messgae = "Invalid Repo, It doesn't exist ! Please recheck the Repo/Issue Name.";
-            this.setErrorMessage(messgae => {
-              this.errorMessgae = messgae;
-            });
+            setErrorMessage(messgae);
           }
         }
       });
@@ -47,7 +43,6 @@ const Home = () => {
                 <Link to={`/IssueDetails/${myarr[0]}/${myarr[1]}/${repo.number}`} target="_blank">
                     <h6 className="repo-name">
                         Issue : {repo.number}
-                        {/* {repo.title} */}
                     </h6>
                 </Link>
           </div>
@@ -75,7 +70,10 @@ const Home = () => {
                             </button>
                         </form>
 
-                        {/* {errorMessgae && <div>{errorMessgae}</div>} */}
+                        {errorMessage && (
+                            <p className="error"> {errorMessage} </p>
+                          )
+                        }
                         <div className="results-container">
                             {repos.map(renderRepo)}
                         </div>

@@ -57,3 +57,13 @@
 .issue-preview-title:hover {
   box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
 }
+
+.error{
+  padding: 10px 8px;
+  margin: 10rem 0;
+  border-bottom: 1px solid #fafafa;
+}
+
+.error:hover{
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+}

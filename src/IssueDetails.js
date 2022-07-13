@@ -2,22 +2,18 @@ import './App.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import ReactDOM from 'react-dom';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import rehypeRaw from "rehype-raw";
 
 function IssueDetails(){
 
-    const [ commentsUrl, setCommentsUrl ] = useState("");
-    const [ commentsData, setCommentsData ] = useState([]);
     const [ commentsLoading, setCommentsLoading ] = useState(false);
     const [ issueDetails, setIssueDetails ] = useState({});
     const [ detailsLoading, setDetailsLoading ] = useState(false);
     const { repoone, repotwo,issuenumber } = useParams();
     const [commentString, setCommentString] = useState("");
-    // ReactDOM.render(<ReactMarkdown>{commentString}</ReactMarkdown>, document.getElementById("comments-section"))
-
+    
     useEffect(() => {
         getIssueDetails({});
     },[]);
@@ -25,7 +21,6 @@ function IssueDetails(){
     function getIssueDetails(){
         setDetailsLoading(true);
         var issueurl = 'https://api.github.com/repos/'+repoone+'/'+repotwo+'/issues/'+issuenumber;
-        setCommentsUrl(issueurl);
         axios.get(issueurl).then(res=>{
             setDetailsLoading(false);
             setIssueDetails(res.data);
@@ -73,9 +68,11 @@ function IssueDetails(){
                 newcomment += "<br/>" +"<h3>"+ ++num+"."+"</h3>"+" "+element.body+"<br/>";
             });
             setCommentString(newcomment);
-            console.log(commentString);
             setCommentsLoading(false);
-            setCommentsData(res.data);
+        }).catch(function (error) {
+            if (error.response) {
+                console.log(error);
+            }
         });
     }
 
