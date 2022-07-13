@@ -12,7 +12,8 @@ const Home = () => {
     const [ repos,setRepos ] = useState([]);
     const [ details, setDetails ] = useState({});
     const [ detailsLoading, setDetailsLoading ] = useState(false);
-    
+    const myarr = reponame.split("/");
+
     function handleSubmit(e){
         e.preventDefault();
         searchRepos();
@@ -43,7 +44,7 @@ const Home = () => {
     function renderRepo(repo){
         return(
           <div className="row issue-preview" key={repo.number}>
-                <Link to={`/IssueDetails/${reponame}/${repo.number}`} target="_blank">
+                <Link to={`/IssueDetails/${myarr[0]}/${myarr[1]}/${repo.number}`} target="_blank">
                     <h6 className="repo-name">
                         Issue : {repo.number}
                         {/* {repo.title} */}

@@ -12,18 +12,16 @@ function IssueDetails(){
     const [ commentsLoading, setCommentsLoading ] = useState(false);
     const [ issueDetails, setIssueDetails ] = useState({});
     const [ detailsLoading, setDetailsLoading ] = useState(false);
-    const { issuenumber } = useParams();
-    const { reponame } = useParams();
+    const { repoone, repotwo,issuenumber } = useParams();
 
     useEffect(() => {
+        console.log("entered");
         getIssueDetails({});
-        renderIssue(issueDetails);
-    },[issueDetails]);
+    },[]);
 
     function getIssueDetails(){
         setDetailsLoading(true);
-        var issueurl = 'https://api.github.com/repos/'+reponame+'/issues/'+issuenumber;
-        console.log(issueurl);
+        var issueurl = 'https://api.github.com/repos/'+repoone+'/'+repotwo+'/issues/'+issuenumber;
         setCommentsUrl(issueurl);
         axios.get(issueurl).then(res=>{
             console.log(res.data);
@@ -35,24 +33,24 @@ function IssueDetails(){
     function renderIssue(issueDetails){
         return(
             <div>
-                <div className="details-row">
+                <div className="details-row issue-preview">
                 <label className="label">Issue Number:</label>
                 <span className="value">{issueDetails.number}</span>
             </div>
-            <div className="details-row">
-                <label className="label">Status:</label>
+            <div className="details-row issue-preview">
+                <label className="label">Status: </label>
                 <span className="value">{issueDetails.state}</span>
             </div>
-            <div className="details-row">
-                <label className="label">Comments:</label>
+            <div className="details-row issue-preview">
+                <label className="label">Comments: </label>
                 <span className="value">{issueDetails.comments}</span>
             </div>
-            <div className="details-row">
-                <label className="label">Title:</label>
+            <div className="details-row issue-preview">
+                <label className="label">Title: </label>
                 <span className="value">{issueDetails.title}</span>
             </div>
             <div className="details-row">
-                <button type="submit" class="btn btn-primary" 
+                <button type="submit" class="fetch-button" 
                    onClick={getComments}>
                         <h6 className="">
                             Get Comments
