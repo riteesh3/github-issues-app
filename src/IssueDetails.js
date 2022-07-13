@@ -1,9 +1,10 @@
 import './App.css';
-import React, { useEffect, useState , ReactDOM } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import reactMarkdown from 'react-markdown';
+import ReactDOM from 'react-dom';
 import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 
 function IssueDetails(){
 
@@ -13,9 +14,10 @@ function IssueDetails(){
     const [ issueDetails, setIssueDetails ] = useState({});
     const [ detailsLoading, setDetailsLoading ] = useState(false);
     const { repoone, repotwo,issuenumber } = useParams();
+    const [commentString, setCommentString] = useState("");
+    // ReactDOM.render(<ReactMarkdown>{commentString}</ReactMarkdown>, document.getElementById("comments-section"))
 
     useEffect(() => {
-        console.log("entered");
         getIssueDetails({});
     },[]);
 
@@ -24,7 +26,6 @@ function IssueDetails(){
         var issueurl = 'https://api.github.com/repos/'+repoone+'/'+repotwo+'/issues/'+issuenumber;
         setCommentsUrl(issueurl);
         axios.get(issueurl).then(res=>{
-            console.log(res.data);
             setDetailsLoading(false);
             setIssueDetails(res.data);
         });
@@ -45,54 +46,55 @@ function IssueDetails(){
                 <label className="label">Comments: </label>
                 <span className="value">{issueDetails.comments}</span>
             </div>
-            <div className="details-row issue-preview">
+            <div className="details-row issue-preview-title">
                 <label className="label">Title: </label>
                 <span className="value">{issueDetails.title}</span>
             </div>
             <div className="details-row">
                 <button type="submit" class="fetch-button" 
                    onClick={getComments}>
-                        <h6 className="">
                             Get Comments
-                        {/* {repo.title} */}
-                        </h6>
                 </button>
             </div>
-            </div>
+        </div>
         );
     }
     
     function getComments(){
         setCommentsLoading(true);
         var commentsurl;
-        commentsurl = commentsUrl+'/comments';
+        let newcomment;
+        commentsurl = 'https://api.github.com/repos/'+repoone+'/'+repotwo+'/issues/'+issuenumber+'/comments';
         axios.get(commentsurl).then(res=>{
+            var num =0;
+            res.data.forEach(element => {
+                newcomment += " \n \n" + "<  " + ++num+"."+"   >"+" "+element.body+". \n \n";
+            });
+            setCommentString(newcomment);
+            console.log(commentString);
             setCommentsLoading(false);
             setCommentsData(res.data);
-            console.log(res.data);
-            const comData = commentsData.body;
         });
     }
 
-    function renderComments(commentsData){
+    function renderComments(){
         return(
-          <div className="row" key={commentsData.number}>
-                <h6 className="comments-data-container">
-                ReactDOM.render(<ReactMarkdown></ReactMarkdown>,documnet.body.comments-data-container)
-                </h6>
+          <div className="row">
+                <p className="comments-data-container">
+                <ReactMarkdown remarkPlugins={[gfm]}>{commentString}</ReactMarkdown>
+                </p>
           </div>
         );
       }
 
-    // if(loading){
-    //     return(
-    //         <h1 className="loader">Loading...</h1>
-    //     )
-    // }
-
     return(
+        <div>
         <div className="repo-details-container">
             {renderIssue(issueDetails)}
+        </div>
+        <div className="comments-section">
+            {renderComments()}
+            </div>
         </div>
     );
 }
