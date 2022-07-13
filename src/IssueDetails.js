@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
+import rehypeRaw from "rehype-raw";
 
 function IssueDetails(){
 
@@ -50,6 +51,7 @@ function IssueDetails(){
                 <label className="label">Title: </label>
                 <span className="value">{issueDetails.title}</span>
             </div>
+            <br></br>
             <div className="details-row">
                 <button type="submit" class="fetch-button" 
                    onClick={getComments}>
@@ -68,7 +70,7 @@ function IssueDetails(){
         axios.get(commentsurl).then(res=>{
             var num =0;
             res.data.forEach(element => {
-                newcomment += " \n \n" + "<  " + ++num+"."+"   >"+" "+element.body+". \n \n";
+                newcomment += "<br/>" +"<h3>"+ ++num+"."+"</h3>"+" "+element.body+"<br/>";
             });
             setCommentString(newcomment);
             console.log(commentString);
@@ -81,7 +83,7 @@ function IssueDetails(){
         return(
           <div className="row">
                 <p className="comments-data-container">
-                <ReactMarkdown remarkPlugins={[gfm]}>{commentString}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[gfm]} rehypePlugins={[rehypeRaw]}>{commentString}</ReactMarkdown>
                 </p>
           </div>
         );
