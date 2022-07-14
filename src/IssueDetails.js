@@ -31,20 +31,20 @@ function IssueDetails(){
         return(
             <div>
                 <div className="details-row issue-preview">
-                <label className="label">Issue Number:</label>
-                <span className="value">{issueDetails.number}</span>
+                <label className="label"><b> Issue Number : </b></label>
+                <span className="value">{"  " +issueDetails.number}</span>
             </div>
             <div className="details-row issue-preview">
-                <label className="label">Status: </label>
-                <span className="value">{issueDetails.state}</span>
+                <label className="label"><b> Status : </b></label>
+                <span className="value">{"  " + issueDetails.state}</span>
             </div>
             <div className="details-row issue-preview">
-                <label className="label">Comments: </label>
-                <span className="value">{issueDetails.comments}</span>
+                <label className="label"><b> Comments : </b></label>
+                <span className="value">{"  " + issueDetails.comments}</span>
             </div>
             <div className="details-row issue-preview-title">
-                <label className="label">Title: </label>
-                <span className="value">{issueDetails.title}</span>
+                <label className="label"><b> Title : </b></label>
+                <span className="value">{"  " + issueDetails.title}</span>
             </div>
             <br></br>
             <div className="details-row">
@@ -67,7 +67,7 @@ function IssueDetails(){
             res.data.forEach(element => {
                 newcomment += "<br/>" +"<h3>"+ ++num+"."+"</h3>"+" "+element.body+"<br/>";
             });
-            setCommentString(newcomment);
+            setCommentString(newcomment.slice(9));
             setCommentsLoading(false);
         }).catch(function (error) {
             if (error.response) {

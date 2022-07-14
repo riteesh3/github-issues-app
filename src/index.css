@@ -49,7 +49,7 @@
 }
 
 .issue-preview-title{
-  padding: 10px 8px;
+  padding: 10px 16px;
   margin: 5px 0;
   border-bottom: 1px solid #fafafa;
 }
@@ -65,5 +65,15 @@
 }
 
 .error:hover{
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+}
+
+.comments-data-container{
+  padding: 10px 16px;
+  margin: 5px 0;
+  border-bottom: 1px solid #fafafa;
+}
+
+.comments-data-container:hover{
   box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
 }

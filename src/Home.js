@@ -62,7 +62,8 @@ const Home = () => {
                             <input type="text" class="input" 
                                 value = {reponame}
                                 placeholder="eg:username/repo"
-                                onChange={e => setReponame(e.target.value)}>
+                                onChange={e => {setErrorMessage(""); 
+                                    setReponame(e.target.value)}}>
                             </input>
                             <button type="submit" class="fetch-button" 
                                 onClick={handleSubmit}>
